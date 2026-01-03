@@ -22,7 +22,7 @@ const items: NavSecondaryItem[] = [
 	},
 	{
 		title: 'Project GitHub Repo',
-		url: 'https://github.com/zepartner/gregory-moulton-youtube-tanstack-start-cloudflare-template',
+		url: 'https://github.com/zepartner/tanstack-start-cloadflare-saas-template',
 		icon: GithubIcon,
 	},
 	{
