@@ -7,7 +7,7 @@ export const Route = createFileRoute('/')({ component: App });
 function App() {
 	return (
 		<div className="min-h-screen">
-			<h1>Hello World</h1>
+			<h1>Our App Home Page</h1>
 		</div>
 	);
 }
