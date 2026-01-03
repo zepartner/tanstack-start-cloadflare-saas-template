@@ -10,6 +10,7 @@ import { fetchUser } from '@/lib/queries';
 import { formatDate, formatRelativeTime } from '@/lib/utils';
 import { User } from '@/schemas/user-schemas';
 import { createFileRoute, Link, notFound, useNavigate } from '@tanstack/react-router';
+import { useServerFn } from '@tanstack/react-start';
 import { Calendar, FileText, Mail, Palette, User as UserIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -39,7 +40,7 @@ export const Route = createFileRoute('/dashboard/users/$id')({
 function RouteComponent() {
 	const navigate = useNavigate();
 	const user = Route.useLoaderData();
-
+	const deleteUserFn = useServerFn(deleteUser);
 	const getColorValue = (colorName: string) => {
 		const colorMap: Record<string, string> = {
 			red: '#ef4444',
@@ -124,7 +125,7 @@ function RouteComponent() {
 						action={async () => {
 							const toastId = toast.loading('Deleting user...');
 							try {
-								const response = await deleteUser({ data: user?.id as string });
+								const response = await deleteUserFn({ data: user?.id as string });
 								if (!response?.success) {
 									throw new Error('Failed to delete user');
 								}
@@ -132,8 +133,9 @@ function RouteComponent() {
 								navigate({ to: '/dashboard/users', replace: true });
 								return { error: false, message: 'User deleted successfully' };
 							} catch (error) {
-								toast.error('Failed to delete user', { id: toastId });
-								return { error: true, message: 'Failed to delete user' };
+								toast.error('Failed to delete user', { id: toastId, description: error instanceof Error ? error.message : 'Unknown error' });
+								// OVERRIDE THE ERROR TOAST FROM ACTION-BUTTON BECAUSE SYSTEM IS LOCKED
+								return { error: false, message: 'Failed to delete user' };
 							}
 						}}>
 						Delete User
