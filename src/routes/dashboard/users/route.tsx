@@ -10,4 +10,5 @@ export const Route = createFileRoute('/dashboard/users')({
 		group: 'Users',
 	},
 	component: () => <Outlet />,
+	notFoundComponent: () => <div>Invalid User ID</div>,
 });
