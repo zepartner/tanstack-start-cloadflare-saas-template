@@ -52,6 +52,12 @@ export const fetchUserLastCreatedAt = createServerFn({
 	return result.created_at as string;
 });
 
+/**
+ * NOT IMPLEMENTED YET - THE FUNCTION WORKS BUT YOU NEED TO IMPLEMENT THE UI TO USE IT
+ * Search for users by first name, last name, or email
+ * @param data - The data containing the query and page number
+ * @returns The users matching the search criteria
+ */
 export const searchUsers = createServerFn({
 	method: 'POST',
 })

@@ -1,26 +1,30 @@
 /**
  * For more details on how to configure Wrangler, refer to:
  * https://developers.cloudflare.com/workers/wrangler/configuration/
+ *
+ * @format
  */
+
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "ts-start-cf-template",
 	"compatibility_date": "2025-09-02",
-	"compatibility_flags": [
-		"nodejs_compat"
-	],
+	"compatibility_flags": ["nodejs_compat"],
 	"main": "@tanstack/react-start/server-entry",
 	"observability": {
-		"enabled": true
+		"enabled": true,
 	},
 	"d1_databases": [
 		{
 			"binding": "DB",
 			"database_name": "saas-starter",
 			"database_id": "21e60b53-b3f2-489b-9ee9-ecc3b2f2fb46",
-			"remote": true
-		}
-	]
+			"remote": true,
+		},
+	],
+	"vars": {
+		"LOCKED": true,
+	},
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

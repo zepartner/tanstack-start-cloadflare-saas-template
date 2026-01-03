@@ -4,11 +4,19 @@ import { User, UserEditable } from '@/schemas/user-schemas';
 import { createServerFn } from '@tanstack/react-start';
 import { env } from 'cloudflare:workers';
 
+const checkIsLocked = () => {
+	if (env.LOCKED) {
+		// toast.error('This application is locked. You cannot make changes to this example system.');
+		throw new Error('This application is locked. You cannot make changes to this example system.');
+	}
+};
+
 export const createUser = createServerFn({
 	method: 'POST',
 })
 	.inputValidator((d: UserEditable) => d)
 	.handler(async ({ data }): Promise<{ success: boolean; user: User }> => {
+		checkIsLocked();
 		try {
 			console.log('createUser() -> START', { data });
 			const result = await env.DB.prepare(
@@ -37,6 +45,7 @@ export const editUser = createServerFn({
 })
 	.inputValidator((d: UserEditableWithId) => d)
 	.handler(async ({ data }): Promise<{ success: boolean; user: User }> => {
+		checkIsLocked();
 		try {
 			const result = await env.DB.prepare(
 				'UPDATE users SET first_name = ?, last_name = ?, email = ?, description = ?, favorite_color = ? WHERE id = ? RETURNING *'
@@ -62,6 +71,7 @@ export const deleteUser = createServerFn({
 })
 	.inputValidator((d: string) => d)
 	.handler(async ({ data }): Promise<{ success: boolean }> => {
+		checkIsLocked();
 		const result = await env.DB.prepare('DELETE FROM users WHERE id = ?').bind(data).run();
 		console.log('deleteUser()', result);
 		if (!result?.success) {
